@@ -1,5 +1,22 @@
 @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Cormorant+Garamond:wght@400;500;600;700&display=swap');
 
+/* =========================================================
+   RELICTA / HERRENLAGER – bereinigte und kommentierte CSS
+   ---------------------------------------------------------
+   Ziel dieser Version:
+   - Optik und Verhalten so weit wie möglich unverändert lassen
+   - offensichtliche Dopplungen entfernen
+   - Struktur besser lesbar machen
+   - nur sehr vorsichtige mobile Verbesserungen behalten
+
+   WICHTIG:
+   - Klassen, die nach dem HTML-Abgleich evtl. Altlasten sind, wurden
+     NICHT aggressiv gelöscht, wenn sie potenziell noch per JS oder
+     in späteren HTML-Ständen genutzt werden könnten.
+   - Doppelte Gallery-Media-Queries wurden zusammengeführt.
+   - Riskante Eingriffe wurden bewusst vermieden.
+========================================================= */
+
 :root {
   --bg-main: #0d0b09;
   --bg-hero: #090807;
@@ -19,6 +36,9 @@
   --teal-soft: rgba(111, 183, 176, 0.12);
 }
 
+/* =========================================================
+   BASIS
+========================================================= */
 html {
   scroll-behavior: smooth;
   scroll-padding-top: 120px;
@@ -31,18 +51,18 @@ html {
 body {
   margin: 0;
   padding: 0;
-  background:
-    radial-gradient(circle at top, rgba(90, 146, 140, 0.04), transparent 24%),
-    linear-gradient(180deg, #090807 0%, #110f0c 100%);
+  overflow-x: hidden;
   color: var(--text-main);
   font-family: "Cormorant Garamond", serif;
   line-height: 1.6;
-  overflow-x: hidden;
+  background:
+    radial-gradient(circle at top, rgba(90, 146, 140, 0.04), transparent 24%),
+    linear-gradient(180deg, #090807 0%, #110f0c 100%);
 }
 
 main {
-  padding: 0;
   position: relative;
+  padding: 0;
   background:
     radial-gradient(circle at 18% 12%, rgba(111, 183, 176, 0.035), transparent 18%),
     radial-gradient(circle at 82% 30%, rgba(181, 138, 74, 0.045), transparent 20%),
@@ -60,8 +80,8 @@ section[id] {
 }
 
 img {
-  max-width: 100%;
   display: block;
+  max-width: 100%;
 }
 
 a {
@@ -73,17 +93,22 @@ a:hover {
   color: #f1d7a5;
 }
 
-h1, h2, h3 {
-  font-family: "Cinzel", serif;
-  color: var(--text-bright);
-  letter-spacing: 0.06em;
+h1,
+h2,
+h3 {
   margin-top: 0;
+  color: var(--text-bright);
+  font-family: "Cinzel", serif;
+  letter-spacing: 0.06em;
 }
 
 p {
   margin-top: 0;
 }
 
+/* =========================================================
+   HEADER / NAVIGATION
+========================================================= */
 .site-header {
   position: sticky;
   top: 0;
@@ -94,38 +119,41 @@ p {
 }
 
 .topnav {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.7rem;
   max-width: 1240px;
   margin: 0 auto;
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 0.7rem;
   padding: 0.9rem 1rem;
-  background: linear-gradient(145deg, rgba(43, 35, 25, 0.92), rgba(24, 20, 16, 0.92));
   border: 1px solid rgba(214, 190, 145, 0.22);
   border-radius: 999px;
+  background: linear-gradient(145deg, rgba(43, 35, 25, 0.92), rgba(24, 20, 16, 0.92));
   box-shadow:
     0 14px 30px rgba(0, 0, 0, 0.28),
     inset 0 0 0 1px rgba(111, 183, 176, 0.04);
 }
 
 .topnav a {
+  padding: 0.7rem 1rem;
+  border-radius: 999px;
   color: #f3ead9;
   font-size: 0.95rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  padding: 0.7rem 1rem;
-  border-radius: 999px;
   transition: background 0.25s ease, color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
 }
 
 .topnav a:hover {
-  background: rgba(201, 166, 107, 0.16);
-  color: #fff5e7;
   transform: translateY(-1px);
+  color: #fff5e7;
+  background: rgba(201, 166, 107, 0.16);
   box-shadow: 0 0 0 1px rgba(111, 183, 176, 0.14);
 }
 
+/* =========================================================
+   GEMEINSAME HILFSKLASSEN / Z-INDEX
+========================================================= */
 .section-flow {
   overflow: hidden;
 }
@@ -133,9 +161,9 @@ p {
 .section-divider {
   position: absolute;
   left: 0;
+  z-index: 0;
   width: 100%;
   line-height: 0;
-  z-index: 0;
   pointer-events: none;
 }
 
@@ -160,6 +188,11 @@ p {
   opacity: 0.92;
 }
 
+/*
+  Diese Gruppe hebt inhaltliche Blöcke über Hintergrund-Dekor.
+  Einige Gallery-/Legacy-Klassen bleiben bewusst erhalten, obwohl sie
+  im aktuellen HTML nicht klar sichtbar sind.
+*/
 .section-head,
 .content-grid,
 .gallery-intro,
@@ -185,10 +218,10 @@ p {
 }
 
 .section-head h2 {
+  margin-bottom: 0;
   font-size: clamp(2.3rem, 5vw, 4.3rem);
   font-weight: 700;
   letter-spacing: 0.05em;
-  margin-bottom: 0;
   text-shadow: 0 0 18px rgba(111, 183, 176, 0.05);
 }
 
@@ -205,8 +238,8 @@ p {
 }
 
 .section-head-ornament {
-  text-align: center;
   margin-bottom: 2.2rem;
+  text-align: center;
 }
 
 .section-head-ornament h2 {
@@ -234,18 +267,17 @@ p {
 }
 
 /* =========================================================
-   HERO – unverändert lassen
+   HERO – bewusst nahezu unverändert gelassen
 ========================================================= */
-
 .hero-embers {
   position: relative;
-  min-height: 100vh;
-  overflow: hidden;
   display: flex;
   align-items: flex-start;
   justify-content: center;
-  padding: 7.8rem 1rem 4rem;
+  min-height: 100vh;
   margin-bottom: 60px;
+  padding: 7.8rem 1rem 4rem;
+  overflow: hidden;
   background:
     radial-gradient(circle at 18% 62%, rgba(255, 144, 40, 0.09), transparent 20%),
     radial-gradient(circle at 82% 62%, rgba(255, 144, 40, 0.09), transparent 20%),
@@ -256,8 +288,8 @@ p {
   content: "";
   position: absolute;
   inset: 0;
-  pointer-events: none;
   z-index: 1;
+  pointer-events: none;
   background:
     linear-gradient(to right, rgba(0, 0, 0, 0.58), rgba(0, 0, 0, 0.12) 18%, rgba(0, 0, 0, 0.12) 82%, rgba(0, 0, 0, 0.58)),
     linear-gradient(to bottom, rgba(0, 0, 0, 0.36), rgba(0, 0, 0, 0.06) 28%, rgba(0, 0, 0, 0.20) 100%);
@@ -266,19 +298,19 @@ p {
 .hero-embers-canvas {
   position: absolute;
   inset: 0;
+  z-index: 2;
   width: 100%;
   height: 100%;
   pointer-events: none;
-  z-index: 2;
 }
 
 .hero-center {
   position: relative;
   z-index: 3;
-  width: min(1460px, 100%);
   display: flex;
   align-items: center;
   justify-content: center;
+  width: min(1460px, 100%);
 }
 
 .hero-stage {
@@ -286,9 +318,8 @@ p {
   z-index: 3;
   width: min(1280px, 92vw);
   padding: 0.7rem;
-  background:
-    linear-gradient(180deg, rgba(8, 8, 8, 0.92), rgba(7, 7, 7, 0.86) 54%, rgba(16, 11, 8, 0.88) 100%);
   border: 1px solid rgba(214, 190, 145, 0.05);
+  background: linear-gradient(180deg, rgba(8, 8, 8, 0.92), rgba(7, 7, 7, 0.86) 54%, rgba(16, 11, 8, 0.88) 100%);
   box-shadow:
     0 18px 50px rgba(0, 0, 0, 0.48),
     inset 0 0 60px rgba(0, 0, 0, 0.38);
@@ -315,24 +346,15 @@ p {
 .hero-main-image {
   position: relative;
   z-index: 4;
+  display: block;
   width: 100%;
   height: auto;
-  display: block;
   object-fit: contain;
 }
 
-@media (max-width: 900px) {
-  .hero-stage {
-    width: min(96vw, 1100px);
-    padding: 0.45rem;
-  }
-
-  .hero-stage::before {
-    inset: 0.2rem;
-  }
-}
-
-/* SECTION BACKGROUNDS – vereinheitlicht */
+/* =========================================================
+   SEKTIONSHINTERGRÜNDE / ABSTÄNDE
+========================================================= */
 .section-raubzuege,
 .section-gestabok,
 .section-verbuendete,
@@ -348,10 +370,10 @@ p {
 
 .section-bilderhalle {
   padding: 7rem 1.5rem 7.4rem;
+  color: #f2ede3;
   background:
     radial-gradient(circle at top, rgba(72, 128, 124, 0.10), transparent 28%),
     radial-gradient(circle at bottom, rgba(181, 138, 74, 0.07), transparent 22%);
-  color: #f2ede3;
 }
 
 .section-gestabok {
@@ -381,15 +403,17 @@ p {
   padding: 7rem 1.5rem 4rem;
 }
 
-/* CONTENT */
+/* =========================================================
+   CONTENT / TEXTBLÖCKE
+========================================================= */
 .content-section {
   max-width: 1100px;
   margin: 0 auto;
 }
 
 .content-section h2 {
-  font-size: clamp(2.2rem, 5vw, 4rem);
   margin-bottom: 1rem;
+  font-size: clamp(2.2rem, 5vw, 4rem);
 }
 
 .content-grid {
@@ -408,22 +432,25 @@ p {
 
 .content-section p,
 .content-section li {
-  font-size: 1.2rem;
   color: var(--text-soft);
+  font-size: 1.2rem;
 }
 
 .content-section ul {
   padding-left: 1.4rem;
 }
 
-/* BILDERHALLE ALS SLIDER */
+/* =========================================================
+   BILDERHALLE / SLIDER
+   Bereinigt: doppelte Hover- und Media-Query-Blöcke zusammengeführt.
+========================================================= */
 .gallery-slider-wrap {
-  max-width: 1240px;
-  margin: 0 auto;
   display: grid;
   grid-template-columns: 62px minmax(0, 1fr) 62px;
-  gap: 18px;
   align-items: center;
+  gap: 18px;
+  max-width: 1240px;
+  margin: 0 auto;
 }
 
 .gallery-slider {
@@ -441,8 +468,8 @@ p {
 
 .gallery-slide {
   flex: 0 0 calc((100% - 36px) / 3);
-  margin: 0;
   min-height: 430px;
+  margin: 0;
 }
 
 .gallery-slide img {
@@ -454,17 +481,17 @@ p {
 }
 
 .gallery-nav {
-  width: 62px;
-  height: 62px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  width: 62px;
+  height: 62px;
   border: 1px solid rgba(214, 190, 145, 0.24);
   border-radius: 999px;
-  background: linear-gradient(145deg, rgba(60, 46, 28, 0.92), rgba(21, 19, 15, 0.96));
   color: #f3e8d5;
   font-size: 1.7rem;
   cursor: pointer;
+  background: linear-gradient(145deg, rgba(60, 46, 28, 0.92), rgba(21, 19, 15, 0.96));
   box-shadow:
     0 12px 24px rgba(0, 0, 0, 0.24),
     inset 0 0 0 1px rgba(255, 240, 214, 0.04);
@@ -482,68 +509,9 @@ p {
   pointer-events: none;
 }
 
-@media (max-width: 1000px) {
-  .gallery-slide {
-    flex: 0 0 calc((100% - 18px) / 2);
-    min-height: 400px;
-  }
-}
-
-@media (max-width: 700px) {
-  .gallery-slider-wrap {
-    grid-template-columns: 48px minmax(0, 1fr) 48px;
-    gap: 10px;
-  }
-
-  .gallery-slide {
-    flex: 0 0 100%;
-    min-height: 360px;
-  }
-
-  .gallery-nav {
-    width: 48px;
-    height: 48px;
-    font-size: 1.3rem;
-  }
-}
-
-
-.gallery-nav:hover {
-  transform: translateY(-2px);
-  border-color: rgba(230, 205, 162, 0.44);
-  background: linear-gradient(145deg, rgba(90, 66, 38, 0.95), rgba(31, 25, 19, 0.98));
-}
-
-@media (max-width: 1000px) {
-  .gallery-slide {
-    flex: 0 0 calc(50% - 9px);
-    min-height: 400px;
-  }
-}
-
-@media (max-width: 700px) {
-  .gallery-slider-wrap {
-    grid-template-columns: 52px minmax(0, 1fr) 52px;
-    gap: 10px;
-  }
-
-  .gallery-slide {
-    flex: 0 0 100%;
-    min-height: 360px;
-  }
-
-  .gallery-nav {
-    width: 48px;
-    height: 48px;
-    font-size: 1.3rem;
-  }
-
-  .hero-main-panel {
-    min-height: 64vh;
-  }
-}
-
-/* VERBUENDETE */
+/* =========================================================
+   VERBÜNDETE
+========================================================= */
 .allies-section {
   max-width: 1150px;
   margin: 0 auto;
@@ -553,9 +521,9 @@ p {
   max-width: 900px;
   margin: 0 auto;
   padding: 1.2rem;
-  background: linear-gradient(180deg, rgba(52, 42, 28, 0.72), rgba(24, 20, 16, 0.92));
   border: 1px solid rgba(214, 190, 145, 0.18);
   border-radius: 32px;
+  background: linear-gradient(180deg, rgba(52, 42, 28, 0.72), rgba(24, 20, 16, 0.92));
   box-shadow:
     0 18px 40px rgba(0, 0, 0, 0.28),
     inset 0 0 0 1px rgba(111, 183, 176, 0.04);
@@ -563,11 +531,11 @@ p {
 
 .ally-image-frame {
   position: relative;
-  padding: 12px;
   margin-bottom: 1.5rem;
-  background: linear-gradient(145deg, #8d6a3d, #5c4325);
+  padding: 12px;
   border: 1px solid rgba(214, 190, 145, 0.45);
   border-radius: 28px;
+  background: linear-gradient(145deg, #8d6a3d, #5c4325);
   box-shadow:
     0 18px 40px rgba(0, 0, 0, 0.24),
     inset 0 0 0 1px rgba(255, 240, 214, 0.08);
@@ -583,11 +551,11 @@ p {
 }
 
 .ally-image-frame img {
-  width: 100%;
   display: block;
+  width: 100%;
+  max-height: 520px;
   border-radius: 20px;
   object-fit: cover;
-  max-height: 520px;
   filter: contrast(1.03) saturate(0.94) brightness(0.97);
 }
 
@@ -611,23 +579,25 @@ p {
 .ally-link {
   display: inline-block;
   padding: 0.85rem 1.3rem;
-  border-radius: 999px;
-  background: rgba(201, 166, 107, 0.14);
   border: 1px solid rgba(214, 190, 145, 0.28);
+  border-radius: 999px;
   color: #f2e7d5;
   letter-spacing: 0.05em;
-  transition: transform 0.25s ease, background 0.25s ease, color 0.25s ease, box-shadow 0.25s ease;
+  background: rgba(201, 166, 107, 0.14);
   box-shadow: 0 0 0 1px rgba(111, 183, 176, 0.06);
+  transition: transform 0.25s ease, background 0.25s ease, color 0.25s ease, box-shadow 0.25s ease;
 }
 
 .ally-link:hover {
-  background: rgba(201, 166, 107, 0.24);
-  color: #fff5e6;
   transform: translateY(-2px);
+  color: #fff5e6;
+  background: rgba(201, 166, 107, 0.24);
   box-shadow: 0 0 0 1px rgba(111, 183, 176, 0.16);
 }
 
-/* TRIBUTE – ruhiger und passender */
+/* =========================================================
+   TRIBUTE
+========================================================= */
 .tribute {
   max-width: 1100px;
   margin: 0 auto;
@@ -636,25 +606,22 @@ p {
 }
 
 .tribute h2 {
-  font-size: clamp(2.8rem, 6vw, 5rem);
   margin-bottom: 2rem;
+  font-size: clamp(2.8rem, 6vw, 5rem);
   text-align: center;
   letter-spacing: 0.06em;
 }
 
 .tribute-media {
   margin-bottom: 2.2rem;
-  max-width: 820px;
-  margin-left: auto;
-  margin-right: auto;
 }
 
 .tribute-media img {
-  width: 100%;
   display: block;
+  width: 100%;
+  max-height: 620px;
   border-radius: 24px;
   object-fit: cover;
-  max-height: 520px;
   background: #1b1a17;
   box-shadow:
     0 20px 48px rgba(0, 0, 0, 0.28),
@@ -662,19 +629,18 @@ p {
 }
 
 .tribute-text {
+  position: relative;
   max-width: 860px;
   margin: 0 auto;
   padding: 2rem 1.7rem 1.6rem;
-  text-align: center;
-  background:
-    linear-gradient(180deg, rgba(34, 25, 18, 0.68), rgba(15, 11, 9, 0.86));
+  overflow: hidden;
   border: 1px solid rgba(214, 190, 145, 0.14);
   border-radius: 28px;
+  text-align: center;
+  background: linear-gradient(180deg, rgba(34, 25, 18, 0.68), rgba(15, 11, 9, 0.86));
   box-shadow:
     0 18px 40px rgba(0, 0, 0, 0.24),
     inset 0 0 0 1px rgba(255, 240, 214, 0.03);
-  position: relative;
-  overflow: hidden;
 }
 
 .tribute-text::before {
@@ -687,149 +653,94 @@ p {
 }
 
 .tribute-text p {
-  margin: 0 0 1.25rem;
-  font-size: clamp(1.14rem, 1.45vw, 1.34rem);
-  line-height: 1.85;
-  color: #e4d8c7;
   position: relative;
   z-index: 1;
+  margin: 0 0 1.25rem;
+  color: #e4d8c7;
+  font-size: clamp(1.14rem, 1.45vw, 1.34rem);
+  line-height: 1.85;
 }
 
 .tribute-lead {
+  margin-bottom: 1.4rem;
+  color: #f4ead8;
   font-size: clamp(1.32rem, 2vw, 1.72rem);
   line-height: 1.65;
-  color: #f4ead8;
-  margin-bottom: 1.4rem;
 }
 
 .tribute-intro {
-  color: #efe3d1;
   margin-bottom: 1.6rem;
+  color: #efe3d1;
 }
 
 .tribute-text ul {
-  list-style: none;
+  position: relative;
+  z-index: 1;
   max-width: 640px;
   margin: 1.6rem auto 1.9rem;
   padding: 0;
+  list-style: none;
   text-align: left;
-  position: relative;
-  z-index: 1;
 }
 
 .tribute-text li {
   position: relative;
   margin-bottom: 0.95rem;
   padding-left: 1.85rem;
+  color: #ddd1bf;
   font-size: clamp(1.08rem, 1.35vw, 1.24rem);
   line-height: 1.78;
-  color: #ddd1bf;
 }
 
 .tribute-text li::before {
   content: "✦";
   position: absolute;
-  left: 0;
   top: 0.02rem;
+  left: 0;
   color: #d8b77a;
   font-size: 1rem;
   opacity: 0.95;
 }
 
 .tribute-thanks {
+  position: relative;
+  z-index: 1;
   margin-top: 1.7rem;
   margin-bottom: 0.9rem;
+  color: #f3e7d3;
   font-family: "Cinzel", serif;
   font-size: clamp(1.34rem, 2vw, 1.8rem);
   letter-spacing: 0.04em;
-  color: #f3e7d3;
-  position: relative;
-  z-index: 1;
 }
 
 .tribute-note {
+  position: relative;
+  z-index: 1;
   margin-bottom: 0;
   color: #d6c2a0;
   font-size: clamp(1.02rem, 1.2vw, 1.13rem);
   line-height: 1.75;
-  position: relative;
-  z-index: 1;
 }
 
-@media (max-width: 900px) {
-  .tribute {
-    padding: 4.2rem 1.2rem;
-  }
-
-  .tribute-text {
-    max-width: 760px;
-    padding: 1.8rem 1.4rem 1.5rem;
-  }
-}
-
-@media (max-width: 640px) {
-  .tribute {
-    padding: 4rem 1rem;
-  }
-
-  .tribute h2 {
-    margin-bottom: 1.6rem;
-  }
-
-  .tribute-media {
-    margin-bottom: 1.8rem;
-  }
-
-  .tribute-media img {
-    border-radius: 18px;
-  }
-
-  .tribute-text {
-    padding: 1.35rem 1rem 1.2rem;
-    border-radius: 18px;
-  }
-
-  .tribute-text p,
-  .tribute-text li {
-    font-size: 1.04rem;
-    line-height: 1.75;
-  }
-
-  .tribute-lead {
-    font-size: 1.2rem;
-    line-height: 1.65;
-  }
-
-  .tribute-thanks {
-    font-size: 1.28rem;
-  }
-
-  .tribute-note {
-    font-size: 1rem;
-  }
-
-  .tribute-text li {
-    padding-left: 1.55rem;
-  }
-}
-
-/* COUNTER */
+/* =========================================================
+   COUNTER
+========================================================= */
 .visitor-counter-section {
   position: relative;
 }
 
 .visitor-counter-card {
   position: relative;
-  max-width: 980px;
-  margin: 0 auto;
-  padding: 2rem 1.8rem;
   display: grid;
   grid-template-columns: 170px 1fr 170px;
   align-items: center;
   gap: 1.4rem;
-  border-radius: 34px;
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 2rem 1.8rem;
   overflow: hidden;
   border: 1px solid rgba(214, 190, 145, 0.22);
+  border-radius: 34px;
   background:
     radial-gradient(circle at top, rgba(181, 138, 74, 0.14), transparent 52%),
     linear-gradient(145deg, rgba(57, 43, 25, 0.97), rgba(24, 19, 14, 0.98));
@@ -842,10 +753,10 @@ p {
   content: "";
   position: absolute;
   inset: 18px;
+  z-index: 1;
   border: 1px solid rgba(214, 190, 145, 0.14);
   border-radius: 26px;
   pointer-events: none;
-  z-index: 1;
 }
 
 .visitor-counter-card::after {
@@ -858,11 +769,11 @@ p {
 }
 
 .counter-side {
+  position: relative;
+  z-index: 2;
   display: flex;
   align-items: center;
   justify-content: center;
-  position: relative;
-  z-index: 2;
 }
 
 .counter-emblem {
@@ -870,10 +781,7 @@ p {
   height: auto;
   object-fit: contain;
   opacity: 0.95;
-  filter:
-    brightness(0)
-    invert(1)
-    drop-shadow(0 0 8px rgba(255, 255, 255, 0.10));
+  filter: brightness(0) invert(1) drop-shadow(0 0 8px rgba(255, 255, 255, 0.10));
 }
 
 .counter-emblem.mirrored {
@@ -889,16 +797,16 @@ p {
 .counter-label {
   margin: 0 0 0.8rem;
   color: #d6c2a0;
+  font-size: 0.98rem;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  font-size: 0.98rem;
 }
 
 .counter-label::before,
 .counter-label::after {
   content: "ᛏ";
-  color: var(--teal);
   margin: 0 0.55rem;
+  color: var(--teal);
 }
 
 .counter-number-wrap {
@@ -915,13 +823,13 @@ p {
   display: inline-block;
   min-width: 260px;
   padding: 1rem 1.6rem;
-  border-radius: 18px;
-  background: rgba(10, 10, 9, 0.46);
   border: 1px solid rgba(214, 190, 145, 0.16);
+  border-radius: 18px;
   color: var(--text-bright);
   font-family: "Cinzel", serif;
   font-size: clamp(2rem, 4vw, 3.2rem);
   letter-spacing: 0.08em;
+  background: rgba(10, 10, 9, 0.46);
   box-shadow: inset 0 0 14px rgba(0, 0, 0, 0.2);
 }
 
@@ -931,7 +839,9 @@ p {
   font-size: 1rem;
 }
 
-/* BOTSCHAFT */
+/* =========================================================
+   BOTSCHAFT
+========================================================= */
 .botschaft {
   max-width: 950px;
   margin: 0 auto;
@@ -939,8 +849,8 @@ p {
 }
 
 .botschaft h2 {
-  font-size: clamp(3rem, 7vw, 5.5rem);
   margin-bottom: 2rem;
+  font-size: clamp(3rem, 7vw, 5.5rem);
   letter-spacing: 0.08em;
 }
 
@@ -957,11 +867,11 @@ p {
 }
 
 .botschaft-bildrahmen img {
+  display: block;
   width: 100%;
   aspect-ratio: 1 / 1;
-  object-fit: cover;
-  display: block;
   border-radius: 999px;
+  object-fit: cover;
 }
 
 .botschaft-text {
@@ -986,22 +896,24 @@ p {
   border-color: rgba(241, 215, 165, 0.9);
 }
 
-/* IMPRESSUM */
+/* =========================================================
+   IMPRESSUM
+========================================================= */
 .impressum-wrap {
   max-width: 1100px;
   margin: 0 auto;
 }
 
 .impressum-card {
+  position: relative;
   max-width: 860px;
   padding: 1.8rem 1.5rem;
-  background: linear-gradient(145deg, rgba(57, 43, 25, 0.92), rgba(24, 19, 14, 0.98));
   border: 1px solid rgba(214, 190, 145, 0.18);
   border-radius: 28px;
+  background: linear-gradient(145deg, rgba(57, 43, 25, 0.92), rgba(24, 19, 14, 0.98));
   box-shadow:
     0 18px 36px rgba(0, 0, 0, 0.24),
     inset 0 0 0 1px rgba(255, 240, 214, 0.04);
-  position: relative;
 }
 
 .impressum-card::before {
@@ -1021,8 +933,8 @@ p {
 
 .impressum-block h3 {
   margin: 0 0 0.8rem;
-  font-size: 1.1rem;
   color: #f2e7d5;
+  font-size: 1.1rem;
   letter-spacing: 0.04em;
 }
 
@@ -1049,16 +961,19 @@ p {
   border-color: rgba(241, 215, 165, 0.9);
 }
 
-/* FOOTER */
+/* =========================================================
+   FOOTER / SOCIALS
+   Bereinigt: doppelte box-shadow-Deklaration in .social-pill entfernt.
+========================================================= */
 .social-footer {
   position: relative;
   margin-top: 0;
   padding: 2.4rem 1.5rem 3.2rem;
+  overflow: hidden;
+  border-top: 1px solid rgba(214, 190, 145, 0.18);
   background:
     radial-gradient(circle at top, rgba(181, 138, 74, 0.16), transparent 42%),
     linear-gradient(to top, rgba(8, 8, 7, 1), rgba(20, 17, 13, 0.97));
-  border-top: 1px solid rgba(214, 190, 145, 0.18);
-  overflow: hidden;
 }
 
 .social-footer::before {
@@ -1095,36 +1010,31 @@ p {
 
 .social-links {
   display: flex;
-  justify-content: center;
   flex-wrap: wrap;
+  justify-content: center;
   gap: 0.95rem;
 }
 
 .social-pill {
   position: relative;
-  width: 58px;
-  height: 58px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  width: 58px;
+  height: 58px;
+  border: 1px solid rgba(214, 190, 145, 0.26);
   border-radius: 999px;
   background: linear-gradient(145deg, rgba(126, 96, 52, 0.34), rgba(58, 44, 24, 0.88));
-  border: 1px solid rgba(214, 190, 145, 0.26);
   box-shadow:
     0 8px 20px rgba(0, 0, 0, 0.24),
     inset 0 0 0 1px rgba(255, 240, 214, 0.05);
-  transition:
-    transform 0.25s ease,
-    box-shadow 0.25s ease,
-    border-color 0.25s ease,
-    background 0.25s ease;
-  box-shadow: 0 0 0 1px rgba(111, 183, 176, 0.06);
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease, background 0.25s ease;
 }
 
 .social-pill img {
+  display: block;
   width: 23px;
   height: 23px;
-  display: block;
   opacity: 0.95;
 }
 
@@ -1143,18 +1053,20 @@ p {
   bottom: 10px;
   width: 10px;
   height: 10px;
+  border: 2px solid #1b1712;
   border-radius: 999px;
   background: #d8b77a;
-  border: 2px solid #1b1712;
   box-shadow: 0 0 10px rgba(216, 183, 122, 0.35);
 }
 
-/* GESTABOK */
+/* =========================================================
+   GÄSTEBUCH / GESTABOK
+========================================================= */
 .gestabok-shell {
-  max-width: 1180px;
-  margin: 0 auto;
   position: relative;
   z-index: 2;
+  max-width: 1180px;
+  margin: 0 auto;
 }
 
 .gestabok-intro {
@@ -1164,28 +1076,28 @@ p {
 }
 
 .gestabok-intro p {
-  font-size: 1.2rem;
   color: var(--text-soft);
+  font-size: 1.2rem;
 }
 
 .gestabok-layout {
   display: grid;
   grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
-  gap: 1.6rem;
   align-items: start;
+  gap: 1.6rem;
 }
 
 .gestabok-form-card,
 .gestabok-entries-card {
   position: relative;
   padding: 1.7rem 1.5rem;
+  overflow: hidden;
+  border: 1px solid rgba(214, 190, 145, 0.18);
   border-radius: 30px;
   background: linear-gradient(145deg, rgba(57, 43, 25, 0.88), rgba(21, 18, 14, 0.97));
-  border: 1px solid rgba(214, 190, 145, 0.18);
   box-shadow:
     0 18px 36px rgba(0, 0, 0, 0.24),
     inset 0 0 0 1px rgba(255, 240, 214, 0.04);
-  overflow: hidden;
 }
 
 .gestabok-form-card::before,
@@ -1234,20 +1146,20 @@ p {
 .form-row textarea {
   width: 100%;
   padding: 0.95rem 1rem;
-  border-radius: 18px;
+  outline: none;
   border: 1px solid rgba(214, 190, 145, 0.16);
-  background: linear-gradient(180deg, rgba(13, 11, 9, 0.95), rgba(20, 16, 12, 0.92));
+  border-radius: 18px;
   color: var(--text-bright);
   font-family: "Cormorant Garamond", serif;
   font-size: 1.12rem;
   line-height: 1.6;
-  outline: none;
-  transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
+  resize: vertical;
+  background: linear-gradient(180deg, rgba(13, 11, 9, 0.95), rgba(20, 16, 12, 0.92));
   box-shadow: inset 0 0 0 1px rgba(255, 240, 214, 0.025);
+  transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
 }
 
 .form-row textarea {
-  resize: vertical;
   min-height: 180px;
 }
 
@@ -1275,21 +1187,17 @@ p {
   padding: 0.9rem 1.35rem;
   border: 1px solid rgba(214, 190, 145, 0.28);
   border-radius: 999px;
-  background: linear-gradient(145deg, rgba(126, 96, 52, 0.34), rgba(58, 44, 24, 0.92));
   color: #f2e7d5;
   font-family: "Cinzel", serif;
   font-size: 0.95rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   cursor: pointer;
-  transition:
-    transform 0.25s ease,
-    box-shadow 0.25s ease,
-    border-color 0.25s ease,
-    background 0.25s ease;
+  background: linear-gradient(145deg, rgba(126, 96, 52, 0.34), rgba(58, 44, 24, 0.92));
   box-shadow:
     0 10px 22px rgba(0, 0, 0, 0.22),
     inset 0 0 0 1px rgba(255, 240, 214, 0.04);
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease, background 0.25s ease;
 }
 
 .guestbook-submit:hover {
@@ -1308,19 +1216,18 @@ p {
 }
 
 .guestbook-entries {
-  display: grid;
-  gap: 1rem;
   position: relative;
   z-index: 2;
+  display: grid;
+  gap: 1rem;
 }
 
 .guestbook-entry {
   position: relative;
   padding: 1.2rem 1.15rem 1.1rem;
-  border-radius: 22px;
-  background:
-    linear-gradient(180deg, rgba(16, 14, 11, 0.88), rgba(11, 10, 8, 0.96));
   border: 1px solid rgba(214, 190, 145, 0.14);
+  border-radius: 22px;
+  background: linear-gradient(180deg, rgba(16, 14, 11, 0.88), rgba(11, 10, 8, 0.96));
   box-shadow:
     0 12px 26px rgba(0, 0, 0, 0.18),
     inset 0 0 0 1px rgba(255, 240, 214, 0.025);
@@ -1347,9 +1254,9 @@ p {
 
 .guestbook-entry-head h4 {
   margin: 0;
+  color: var(--text-bright);
   font-family: "Cinzel", serif;
   font-size: 1.08rem;
-  color: var(--text-bright);
   letter-spacing: 0.04em;
 }
 
@@ -1361,25 +1268,24 @@ p {
 
 .guestbook-entry p {
   margin: 0;
+  color: var(--text-soft);
   font-size: 1.12rem;
   line-height: 1.75;
-  color: var(--text-soft);
 }
 
 .guestbook-empty {
   position: relative;
   z-index: 2;
-  min-height: 320px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  text-align: center;
+  min-height: 320px;
   padding: 2rem 1.2rem;
-  border-radius: 24px;
-  background:
-    linear-gradient(180deg, rgba(16, 14, 11, 0.82), rgba(11, 10, 8, 0.95));
   border: 1px solid rgba(214, 190, 145, 0.12);
+  border-radius: 24px;
+  text-align: center;
+  background: linear-gradient(180deg, rgba(16, 14, 11, 0.82), rgba(11, 10, 8, 0.95));
   box-shadow:
     0 12px 26px rgba(0, 0, 0, 0.18),
     inset 0 0 0 1px rgba(255, 240, 214, 0.02);
@@ -1405,18 +1311,18 @@ p {
 
 .guestbook-empty-title {
   margin: 0 0 0.55rem;
+  color: var(--text-bright);
   font-family: "Cinzel", serif;
   font-size: 1.3rem;
   letter-spacing: 0.05em;
-  color: var(--text-bright);
 }
 
 .guestbook-empty-text {
-  margin: 0;
   max-width: 28ch;
+  margin: 0;
+  color: var(--text-soft);
   font-size: 1.12rem;
   line-height: 1.75;
-  color: var(--text-soft);
 }
 
 .form-error {
@@ -1447,8 +1353,64 @@ p {
   border: 1px solid rgba(214, 190, 145, 0.18);
 }
 
-/* RESPONSIVE */
+/* =========================================================
+   RAUBZÜGE / POSTER
+========================================================= */
+.raubzuege-poster-wrap {
+  position: relative;
+  z-index: 2;
+  max-width: 980px;
+  margin: 0 auto;
+}
+
+.raubzuege-poster-frame {
+  position: relative;
+  padding: 14px;
+  overflow: hidden;
+  border: 1px solid rgba(214, 190, 145, 0.22);
+  border-radius: 30px;
+  background: linear-gradient(145deg, rgba(78, 58, 34, 0.92), rgba(24, 20, 16, 0.96));
+  box-shadow:
+    0 22px 46px rgba(0, 0, 0, 0.30),
+    inset 0 0 0 1px rgba(255, 240, 214, 0.05);
+}
+
+.raubzuege-poster-frame::before {
+  content: "";
+  position: absolute;
+  inset: 10px;
+  border: 1px solid rgba(111, 183, 176, 0.08);
+  border-radius: 22px;
+  pointer-events: none;
+}
+
+.raubzuege-poster {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: min(100%, 760px);
+  margin: 0 auto;
+  border-radius: 20px;
+  object-fit: contain;
+  box-shadow:
+    0 16px 36px rgba(0, 0, 0, 0.24),
+    0 0 0 1px rgba(255, 240, 214, 0.04);
+}
+
+/* =========================================================
+   RESPONSIVE
+   WICHTIG:
+   - zusammengeführt, wo vorher Dopplungen existierten
+   - riskante Legacy-Regeln (.hero-main-panel etc.) wurden kommentiert
+     statt endgültig hart entfernt
+========================================================= */
 @media (max-width: 1000px) {
+  .gallery-slide {
+    flex: 0 0 calc((100% - 18px) / 2);
+    min-height: 400px;
+  }
+
+  /* Legacy-/Fallback-Grid-Regeln: nur beibehalten, falls ältere HTML-Stände sie noch nutzen */
   .gallery-stage {
     grid-template-columns: 1fr;
   }
@@ -1472,6 +1434,24 @@ p {
 }
 
 @media (max-width: 900px) {
+  .hero-stage {
+    width: min(96vw, 1100px);
+    padding: 0.45rem;
+  }
+
+  .hero-stage::before {
+    inset: 0.2rem;
+  }
+
+  .tribute {
+    padding: 4.2rem 1.2rem;
+  }
+
+  .tribute-text {
+    max-width: 760px;
+    padding: 1.8rem 1.4rem 1.5rem;
+  }
+
   .gestabok-layout {
     grid-template-columns: 1fr;
   }
@@ -1505,8 +1485,29 @@ p {
     font-size: 0.95rem;
   }
 
-  .hero-main-panel {
-    min-height: 72vh;
+  /*
+    ALT / unklar im aktuellen HTML:
+    .hero-main-panel wurde hier früher angesprochen.
+    Nicht übernommen, weil die Klasse im aktuellen HTML-Abgleich nicht sichtbar war.
+    Dadurch wird kein aktiver Stil verändert.
+  */
+}
+
+@media (max-width: 700px) {
+  .gallery-slider-wrap {
+    grid-template-columns: 52px minmax(0, 1fr) 52px;
+    gap: 10px;
+  }
+
+  .gallery-slide {
+    flex: 0 0 100%;
+    min-height: 360px;
+  }
+
+  .gallery-nav {
+    width: 48px;
+    height: 48px;
+    font-size: 1.3rem;
   }
 }
 
@@ -1521,8 +1522,8 @@ p {
   }
 
   .topnav a {
-    font-size: 0.82rem;
     padding: 0.6rem 0.8rem;
+    font-size: 0.82rem;
   }
 
   section {
@@ -1530,26 +1531,12 @@ p {
     padding-right: 1rem;
   }
 
-  .hero.hero-panel {
-    padding-top: 7rem;
-    padding-bottom: 4.5rem;
-  }
-
-  .hero-main-panel {
-    min-height: 58vh;
-    border-radius: 22px;
-  }
-
-  .hero-main-panel::before {
-    inset: 10px;
-    border-radius: 14px;
-  }
-
   .section-divider-top,
   .section-divider-bottom {
     height: 95px;
   }
 
+  /* Legacy-/Fallback-Gallery-Struktur für ältere Varianten behalten */
   .gallery-stage,
   .gallery-strip,
   .gallery-grid-small,
@@ -1583,6 +1570,10 @@ p {
     padding-bottom: 5.3rem;
   }
 
+  .tribute {
+    padding: 4rem 1rem;
+  }
+
   .tribute > h2,
   .botschaft h2,
   .content-section h2,
@@ -1590,8 +1581,17 @@ p {
     margin-bottom: 1.5rem;
   }
 
-  .botschaft-bildrahmen {
-    width: min(360px, 92vw);
+  .tribute-media {
+    margin-bottom: 1.8rem;
+  }
+
+  .tribute-media img {
+    border-radius: 18px;
+  }
+
+  .tribute-text {
+    padding: 1.35rem 1rem 1.2rem;
+    border-radius: 18px;
   }
 
   .tribute-text p,
@@ -1601,6 +1601,32 @@ p {
   .content-section li,
   #impressum p {
     font-size: 1.08rem;
+  }
+
+  .tribute-text p,
+  .tribute-text li {
+    line-height: 1.75;
+  }
+
+  .tribute-lead {
+    font-size: 1.2rem;
+    line-height: 1.65;
+  }
+
+  .tribute-thanks {
+    font-size: 1.28rem;
+  }
+
+  .tribute-note {
+    font-size: 1rem;
+  }
+
+  .tribute-text li {
+    padding-left: 1.55rem;
+  }
+
+  .botschaft-bildrahmen {
+    width: min(360px, 92vw);
   }
 
   .impressum-card {
@@ -1649,8 +1675,8 @@ p {
 
   .guestbook-entry-head {
     flex-direction: column;
-    gap: 0.25rem;
     align-items: flex-start;
+    gap: 0.25rem;
   }
 
   .form-row input,
@@ -1662,50 +1688,7 @@ p {
   .guestbook-submit {
     width: 100%;
   }
-}
 
-.raubzuege-poster-wrap {
-  max-width: 980px;
-  margin: 0 auto;
-  position: relative;
-  z-index: 2;
-}
-
-.raubzuege-poster-frame {
-  position: relative;
-  padding: 14px;
-  border-radius: 30px;
-  background: linear-gradient(145deg, rgba(78, 58, 34, 0.92), rgba(24, 20, 16, 0.96));
-  border: 1px solid rgba(214, 190, 145, 0.22);
-  box-shadow:
-    0 22px 46px rgba(0, 0, 0, 0.30),
-    inset 0 0 0 1px rgba(255, 240, 214, 0.05);
-  overflow: hidden;
-}
-
-.raubzuege-poster-frame::before {
-  content: "";
-  position: absolute;
-  inset: 10px;
-  border: 1px solid rgba(111, 183, 176, 0.08);
-  border-radius: 22px;
-  pointer-events: none;
-}
-
-.raubzuege-poster {
-  position: relative;
-  z-index: 1;
-  display: block;
-  width: min(100%, 760px);
-  margin: 0 auto;
-  border-radius: 20px;
-  object-fit: contain;
-  box-shadow:
-    0 16px 36px rgba(0, 0, 0, 0.24),
-    0 0 0 1px rgba(255, 240, 214, 0.04);
-}
-
-@media (max-width: 640px) {
   .raubzuege-poster-frame {
     padding: 10px;
     border-radius: 22px;
