@@ -6,9 +6,15 @@ const { Pool } = require("pg");
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+if (!process.env.DATABASE_URL) {
+  console.error("DATABASE_URL fehlt.");
+}
+
 const pool = new Pool({
-  connectionString: process.env.DATABASE_URL || "postgresql://postgres:Mondrakete10@localhost:5433/postgres",
-  ssl: false
+  connectionString: process.env.DATABASE_URL,
+  ssl: process.env.NODE_ENV === "production"
+    ? { rejectUnauthorized: false }
+    : false
 });
 
 app.use(express.json());
@@ -22,7 +28,7 @@ function getVisitorHash(req, day) {
   const forwarded = req.headers["x-forwarded-for"];
   const ip = forwarded ? forwarded.split(",")[0].trim() : req.socket.remoteAddress || "";
   const userAgent = req.headers["user-agent"] || "";
-  const salt = "mein-geheimes-salt-123";
+  const salt = process.env.VISITOR_SALT || "change-me";
 
   return crypto
     .createHash("sha256")
