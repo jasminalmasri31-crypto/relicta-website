@@ -740,31 +740,45 @@ document.addEventListener("DOMContentLoaded", () => {
 </script>
 
 <script>
-async function updateVisitorCount() {
-  try {
-    await fetch('/api/visit', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        page: window.location.pathname
-      })
-    });
+  async function updateVisitorCount() {
+    try {
+      const visitResponse = await fetch("/api/visit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ page: window.location.pathname })
+      });
 
-    const response = await fetch('/api/count');
-    const data = await response.json();
+      if (!visitResponse.ok) {
+        const visitText = await visitResponse.text();
+        throw new Error("POST /api/visit fehlgeschlagen: " + visitText);
+      }
 
-    const counter = document.getElementById('visitor-count');
-    if (counter) {
-      counter.textContent = String(data.total).padStart(6, '0');
+      const countResponse = await fetch("/api/count");
+
+      if (!countResponse.ok) {
+        const countText = await countResponse.text();
+        throw new Error("GET /api/count fehlgeschlagen: " + countText);
+      }
+
+      const data = await countResponse.json();
+      console.log("Besucherzähler-Antwort:", data);
+
+      const counter = document.getElementById("visitor-count");
+
+      if (counter) {
+        counter.textContent = String(data.total || 0).padStart(6, "0");
+      }
+    } catch (error) {
+      console.error("Fehler beim Besucherzähler:", error);
+
+      const counter = document.getElementById("visitor-count");
+      if (counter) {
+        counter.textContent = "Fehler";
+      }
     }
-  } catch (error) {
-    console.error('Fehler beim Besucherzähler:', error);
   }
-}
 
-document.addEventListener('DOMContentLoaded', updateVisitorCount);
+  document.addEventListener("DOMContentLoaded", updateVisitorCount);
 </script>
 
 
