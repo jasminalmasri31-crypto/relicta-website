@@ -246,16 +246,29 @@
         </form>
       </div>
 
-      <div class="gestabok-entries-card">
-        <p class="gestabok-card-kicker">Freigegebene Runen</p>
-        <h3>Stimmen aus der Halle</h3>
+                    <div class="guestbook-entries">
 
-        <div class="guestbook-empty">
-          <div class="guestbook-empty-rune" aria-hidden="true">ᛉ</div>
-          <p class="guestbook-empty-title">Noch keine Einträge</p>
-          <p class="guestbook-empty-text">
-            Deine Worte können hier als erstes stehen.
-          </p>
+          <article class="guestbook-entry">
+            <div class="guestbook-entry-head">
+              <h4>Ron vom Niederrhein</h4>
+              <span>23.09.2026</span>
+            </div>
+            <p><strong>Sippengruß aus der Ferne</strong></p>
+            <p>Am vergangenen Wochenende hat es meine kleine Sippe – 3 stramme Krieger und ein wackeres Weibsbild – nach Xanten verschlagen. Was soll ich sagen … Euer Auftritt war schlichtweg wild, laut und verdammt gut. Ihr habt das Volk bestens unterhalten.</p>
+            <p>Welches Land wollt ihr als Nächstes heimsuchen? Verratet uns eure nächsten Raubzug-Termine, damit wir wissen, wo wir als Nächstes unser Lager aufschlagen müssen.</p>
+            <p>Gehabt euch wohl und auf bald!</p>
+          </article>
+
+          <article class="guestbook-entry">
+            <div class="guestbook-entry-head">
+              <h4>Lutisana (Alex)</h4>
+              <span>20.09.2026</span>
+            </div>
+            <p>Seyd gegrüßt, wilde Horde,</p>
+            <p>habe euch heute in Xanten, auf eurem Raubzug, kennengelernt. Euer Heerlager ist fantastisch. Ein absoluter Hingucker. So viel Leidenschaft fürs Detail sieht man selten.</p>
+            <p>Freue mich, euch bald wieder zu sehen.</p>
+          </article>
+
         </div>
       </div>
     </div>
@@ -292,7 +305,7 @@
           <img src="6279.png" alt="Frostwölfe Herrenlager">
         </div>
         <div class="ally-content">
-          <p class="ally-kicker">Das erste Herrlager</p>
+          <p class="ally-kicker">Das erste Herrenlager</p>
           <h3>Frostwölfe</h3>
           <p>
             Ein befreundetes Lager mit eigener Art, eigener Präsenz und eigener Geschichte.
@@ -464,6 +477,7 @@
         <a href="https://instagram.com/relicta_heerlager" target="_blank" rel="noopener noreferrer" aria-label="Instagram" title="Instagram" class="social-pill"><img src="https://cdn.simpleicons.org/instagram/e8dfcf" alt=""></a>
         <a href="https://tiktok.com/@relicta_heerlager" target="_blank" rel="noopener noreferrer" aria-label="TikTok" title="TikTok" class="social-pill"><img src="https://cdn.simpleicons.org/tiktok/e8dfcf" alt=""></a>
         <a href="https://www.facebook.com/profile.php?id=61559397040903" target="_blank" rel="noopener noreferrer" aria-label="Facebook" title="Facebook" class="social-pill"><img src="https://cdn.simpleicons.org/facebook/e8dfcf" alt=""></a>
+        <a href="https://api.whatsapp.com/send?phone=491747452502" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp Kontakt" title="WhatsApp Kontakt" class="social-pill"><img src="https://cdn.simpleicons.org/whatsapp/e8dfcf" alt=""></a>
         <a href="https://whatsapp.com/channel/0029VayX9Ph6RGJQG7NZD22d" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp Kanal" title="WhatsApp Kanal" class="social-pill social-pill-channel"><img src="https://cdn.simpleicons.org/whatsapp/e8dfcf" alt=""><span class="social-dot"></span></a>
       </div>
     </div>
@@ -739,45 +753,31 @@ document.addEventListener("DOMContentLoaded", () => {
 </script>
 
 <script>
-  async function updateVisitorCount() {
-    try {
-      const visitResponse = await fetch("/api/visit", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ page: window.location.pathname })
-      });
+async function updateVisitorCount() {
+  try {
+    await fetch('/api/visit', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        page: window.location.pathname
+      })
+    });
 
-      if (!visitResponse.ok) {
-        const visitText = await visitResponse.text();
-        throw new Error("POST /api/visit fehlgeschlagen: " + visitText);
-      }
+    const response = await fetch('/api/count');
+    const data = await response.json();
 
-      const countResponse = await fetch("/api/count");
-
-      if (!countResponse.ok) {
-        const countText = await countResponse.text();
-        throw new Error("GET /api/count fehlgeschlagen: " + countText);
-      }
-
-      const data = await countResponse.json();
-      console.log("Besucherzähler-Antwort:", data);
-
-      const counter = document.getElementById("visitor-count");
-
-      if (counter) {
-        counter.textContent = String(data.total || 0).padStart(6, "0");
-      }
-    } catch (error) {
-      console.error("Fehler beim Besucherzähler:", error);
-
-      const counter = document.getElementById("visitor-count");
-      if (counter) {
-        counter.textContent = "Fehler";
-      }
+    const counter = document.getElementById('visitor-count');
+    if (counter) {
+      counter.textContent = String(data.total).padStart(6, '0');
     }
+  } catch (error) {
+    console.error('Fehler beim Besucherzähler:', error);
   }
+}
 
-  document.addEventListener("DOMContentLoaded", updateVisitorCount);
+document.addEventListener('DOMContentLoaded', updateVisitorCount);
 </script>
 
 
