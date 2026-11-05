@@ -27,7 +27,7 @@
   <div class="hero-center">
     <div class="hero-stage">
       <div class="hero-visual">
-        <img src="relicta-hero.png" alt="Relicta Motiv" class="hero-main-image">
+        <img src="relicta-hero.jpg" alt="Relicta Motiv" class="hero-main-image">
       </div>
     </div>
   </div>
@@ -754,8 +754,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
 <script>
 async function updateVisitorCount() {
+  const section = document.querySelector('.visitor-counter-section');
+
   try {
-    await fetch('/api/visit', {
+    const response = await fetch('/api/visit', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -765,15 +767,16 @@ async function updateVisitorCount() {
       })
     });
 
-    const response = await fetch('/api/count');
-    const data = await response.json();
+    if (!response.ok) throw new Error('Zähler nicht verfügbar');
 
+    const data = await response.json();
     const counter = document.getElementById('visitor-count');
-    if (counter) {
+    if (counter && typeof data.total === 'number') {
       counter.textContent = String(data.total).padStart(6, '0');
     }
   } catch (error) {
-    console.error('Fehler beim Besucherzähler:', error);
+    // Ohne Server/Datenbank den Zähler einfach ausblenden statt "000000" zu zeigen
+    if (section) section.style.display = 'none';
   }
 }
 
